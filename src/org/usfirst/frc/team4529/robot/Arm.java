@@ -1,9 +1,9 @@
 package org.usfirst.frc.team4529.robot;
 
+import org.usfirst.frc.team4529.framework.Angle;
+import org.usfirst.frc.team4529.framework.Length;
 import org.usfirst.frc.team4529.robot.exceptions.ArmPastMaximumExtensionException;
 import org.usfirst.frc.team4529.robot.exceptions.NotImplementedYetException;
-import org.usfirst.frc.team4529.robot.framework.Angle;
-import org.usfirst.frc.team4529.robot.framework.Length;
 
 /**
  * The arm class manages the arm on the robot. Can move the arm to a relative

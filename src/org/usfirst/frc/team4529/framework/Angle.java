@@ -63,16 +63,23 @@ public class Angle
      */
     public Angle getBasicAngle()
     {
-	double basicAngle = this.value;
+	double basicAngle = this.value % 180;
 
-	basicAngle = basicAngle % 180;
-
-	if(basicAngle >= 90)
+	if(basicAngle == 0)
+	{
+	    return Angle.ZERO;
+	}
+	else if(basicAngle >= 90)
 	{
 	    basicAngle = 180 - basicAngle;
+	    return new Angle(basicAngle);
+	}
+	else // basicAngle <= -90
+	{
+	    basicAngle = 180 + basicAngle;
+	    return new Angle(basicAngle).negative();
 	}
 
-	return new Angle(basicAngle);
     }
 
     /**
@@ -137,5 +144,28 @@ public class Angle
     public Angle negative()
     {
 	return new Angle(-getValue());
+    }
+
+    /**
+     * Gets the true angle (angle relative to North).
+     * 
+     * @return the true angle.
+     */
+    public Angle getTrueAngle()
+    {
+	double trueAngle = (this.value - 90) % 360;
+
+	if(trueAngle == 0)
+	{
+	    return Angle.ZERO;
+	}
+	else if(trueAngle < 0)
+	{
+	    return new Angle(360 + trueAngle);
+	}
+	else // trueAngle > 0
+	{
+	    return new Angle(360 - trueAngle);
+	}
     }
 }
