@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4529.robot.framework;
+package org.usfirst.frc.team4529.framework;
 
 /**
  * This class defines the basic angle measurement for a degree.
