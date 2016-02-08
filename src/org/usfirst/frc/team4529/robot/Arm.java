@@ -1,9 +1,7 @@
 package org.usfirst.frc.team4529.robot;
 
 import org.usfirst.frc.team4529.framework.Angle;
-import org.usfirst.frc.team4529.framework.Length;
 import org.usfirst.frc.team4529.robot.exceptions.ArmPastMaximumExtensionException;
-import org.usfirst.frc.team4529.robot.exceptions.NotImplementedYetException;
 
 /**
  * The arm class manages the arm on the robot. Can move the arm to a relative
@@ -18,7 +16,6 @@ public class Arm
     private static Angle ARM_LOWEST_ANGLE = Angle.ZERO;
     private static Angle ARM_HIGHEST_ANGLE = Angle.NINTY;
     private Angle armAngle;
-    private Length height;
 
     /**
      * Move the arm to an angle.
@@ -41,7 +38,7 @@ public class Arm
 		throw new ArmPastMaximumExtensionException();
 	    }
 	    // TODO: Move arm to angle with linear motor and update current
-	    // height and angle.
+	    // angle.
 	}
 	else
 	{
@@ -51,25 +48,7 @@ public class Arm
 	    }
 
 	    // TODO: Move arm by moveToAngle with linear motor and update
-	    // current height and angle.
+	    // current angle.
 	}
-    }
-
-    /**
-     * Move the arm to a certain height.
-     * 
-     * @param moveToHeight
-     *            The height to be moved either to or by for the arm depending
-     *            on whether <b>absolute</b> is true.
-     * @param absolute
-     *            Whether the arm height is absolute or relative to current
-     *            position.
-     * @throws NotImplementedYetException
-     *             code not completed.
-     */
-    public void Move(Length moveToHeight, boolean absolute) throws NotImplementedYetException
-    {
-	// TODO: Move arm to position with linear motor.
-	throw new NotImplementedYetException();
     }
 }
