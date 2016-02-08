@@ -8,13 +8,13 @@ package org.usfirst.frc.team4529.framework;
  */
 public class Position
 {
-    private double x;
-    private double y;
+    private Length x;
+    private Length y;
 
     /**
      * @return the x
      */
-    public double getX()
+    public Length getX()
     {
 	return x;
     }
@@ -23,7 +23,7 @@ public class Position
      * @param x
      *            the x to set
      */
-    public void setX(double x)
+    public void setX(Length x)
     {
 	this.x = x;
     }
@@ -31,7 +31,7 @@ public class Position
     /**
      * @return the y
      */
-    public double getY()
+    public Length getY()
     {
 	return y;
     }
@@ -40,7 +40,7 @@ public class Position
      * @param y
      *            the y to set
      */
-    public void setY(double y)
+    public void setY(Length y)
     {
 	this.y = y;
     }
