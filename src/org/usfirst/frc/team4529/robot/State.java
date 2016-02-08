@@ -10,7 +10,7 @@ import org.usfirst.frc.team4529.framework.ShootingWheelState;
  * @author frogg
  *
  */
-public class State
+public class State implements Runnable
 {
     private Position robotPosition;
 
@@ -105,5 +105,16 @@ public class State
     public void setShootingWheelState(ShootingWheelState shootingWheelState)
     {
 	this.shootingWheelState = shootingWheelState;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public void run()
+    {
+	// TODO: get values from all the sensors and update the information.
     }
 }

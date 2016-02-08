@@ -17,6 +17,7 @@ public enum ShootingWheelState
      * state of the shooting wheels.
      * 
      * @param state
+     *            the integer representing the state.
      */
     private ShootingWheelState(int state)
     {
@@ -24,7 +25,6 @@ public enum ShootingWheelState
     }
 
     /**
-     * 
      * @return the state of the shooting wheels.
      */
     public int getState()
