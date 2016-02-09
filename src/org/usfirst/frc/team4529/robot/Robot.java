@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4529.robot;
 
+import java.util.ArrayDeque;
+import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -12,6 +15,14 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot
 {
+    private static final int JOYSTICK_PORT = 0;
+    private static final int JOYSTICK_STOP_BUTTON = 1;
+    private RobotArm robotArm;
+    private RobotState robotState;
+    private RobotShooter robotShooter;
+    private Joystick joystick;
+    private DriveBase driveBase;
+    private ArrayDeque<Thread> pausableThreads = new ArrayDeque<Thread>();
 
     /**
      * This function is run once each time the robot enters autonomous mode
@@ -38,7 +49,25 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
+	robotState = RobotState.getInstance();
+	robotState.start();
+	robotArm = RobotArm.getInstance();
+	robotShooter = RobotShooter.getInstance();
+	joystick = new Joystick(JOYSTICK_PORT);
+	try
+	{
+	    driveBase = new FourWheel();
+	    driveBase.setPriority(8);
+	}
+	catch(DriveBaseAlreadyExistsException e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 
+	pausableThreads.add(robotShooter);
+	pausableThreads.add(robotArm);
+	pausableThreads.add(driveBase);
     }
 
     /**
@@ -48,6 +77,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopInit()
     {
+
     }
 
     /**
@@ -56,7 +86,45 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
+	if(joystick.getMagnitude() > 0.05)
+	{
+	    driveBase.joystickMove(joystick.getX(), joystick.getY());
+	    try
+	    {
+		for(Thread t : pausableThreads)
+		{
+		    t.wait();
+		}
+	    }
+	    catch(InterruptedException e)
+	    {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	}
+	else if(joystick.getRawButton(JOYSTICK_STOP_BUTTON))
+	{
+	    robotArm.interrupt();
+	    robotShooter.interrupt();
+	}
+	else
+	{
+	    for(Thread t : pausableThreads)
+	    {
+		switch(t.getState())
+		{
+		    case WAITING:
+		    {
+			t.notify();
+			break;
+		    }
+		    default:
+		    {
 
+		    }
+		}
+	    }
+	}
     }
 
     /**

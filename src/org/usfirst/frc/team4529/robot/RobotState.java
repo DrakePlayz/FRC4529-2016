@@ -10,17 +10,36 @@ import org.usfirst.frc.team4529.framework.ShootingWheelState;
  * @author frogg
  *
  */
-public class State implements Runnable
+public class RobotState extends Thread
 {
     private Position robotPosition;
-
     private Angle orientation;
-
     private Angle armAngle;
-
     private boolean ballCollected;
-
     private ShootingWheelState shootingWheelState;
+    private static RobotState instance = null;
+
+    /**
+     * Private constructor to prevent rogue objects.
+     */
+    private RobotState()
+    {
+
+    }
+
+    /**
+     * Singleton implementation to only allow one instance.
+     * 
+     * @return the instance of this object.
+     */
+    public static RobotState getInstance()
+    {
+	if(instance == null)
+	{
+	    instance = new RobotState();
+	}
+	return instance;
+    }
 
     /**
      * @return the robotPosition
@@ -34,7 +53,7 @@ public class State implements Runnable
      * @param robotPosition
      *            the robotPosition to set
      */
-    public void setRobotPosition(Position robotPosition)
+    private void setRobotPosition(Position robotPosition)
     {
 	this.robotPosition = robotPosition;
     }
@@ -51,7 +70,7 @@ public class State implements Runnable
      * @param orientation
      *            the orientation to set
      */
-    public void setOrientation(Angle orientation)
+    private void setOrientation(Angle orientation)
     {
 	this.orientation = orientation;
     }
@@ -68,7 +87,7 @@ public class State implements Runnable
      * @param armAngle
      *            the armAngle to set
      */
-    public void setArmAngle(Angle armAngle)
+    private void setArmAngle(Angle armAngle)
     {
 	this.armAngle = armAngle;
     }
@@ -85,7 +104,7 @@ public class State implements Runnable
      * @param ballCollected
      *            the ballCollected to set
      */
-    public void setBallCollected(boolean ballCollected)
+    private void setBallCollected(boolean ballCollected)
     {
 	this.ballCollected = ballCollected;
     }
@@ -102,7 +121,7 @@ public class State implements Runnable
      * @param shootingWheelState
      *            the shootingWheelState to set
      */
-    public void setShootingWheelState(ShootingWheelState shootingWheelState)
+    private void setShootingWheelState(ShootingWheelState shootingWheelState)
     {
 	this.shootingWheelState = shootingWheelState;
     }
@@ -115,6 +134,9 @@ public class State implements Runnable
     @Override
     public void run()
     {
-	// TODO: get values from all the sensors and update the information.
+	while(true)
+	{
+	    // TODO: get values from all the sensors and update the information.
+	}
     }
 }
