@@ -92,6 +92,11 @@ public class RobotArm extends Thread
 	}
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Thread#interrupt()
+     */
     @Override
     public void interrupt()
     {
