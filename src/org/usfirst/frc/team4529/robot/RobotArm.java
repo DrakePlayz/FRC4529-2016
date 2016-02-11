@@ -30,7 +30,7 @@ public class RobotArm extends Thread
     /**
      * Singleton implementation. Only allows one instance.
      * 
-     * @return the instace of this class.
+     * @return the instance of this class.
      */
     public static RobotArm getInstance()
     {
