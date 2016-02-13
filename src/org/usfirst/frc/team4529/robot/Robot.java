@@ -115,9 +115,9 @@ public class Robot extends IterativeRobot
 	    {
 		switch(t.getState())
 		{
-		    case WAITING:
+		    case TERMINATED:
 		    {
-			t.notify();
+			t.start();
 			break;
 		    }
 		    default:

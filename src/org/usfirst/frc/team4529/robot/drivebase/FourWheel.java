@@ -10,6 +10,7 @@ import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException
  */
 public class FourWheel extends DriveBase
 {
+    RobotState roboteState = RobotState.getInstance();
 
     public FourWheel() throws DriveBaseAlreadyExistsException
     {
