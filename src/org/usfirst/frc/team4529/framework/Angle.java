@@ -10,6 +10,7 @@ public class Angle
 {
     public static final Angle ZERO = new Angle(0);
     public static final Angle NINTY = new Angle(90);
+    public static final Angle SIXTY = new Angle(60);
     private double value;
 
     /**

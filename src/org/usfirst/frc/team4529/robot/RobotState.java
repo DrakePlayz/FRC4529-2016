@@ -3,6 +3,7 @@ package org.usfirst.frc.team4529.robot;
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.framework.Position;
 import org.usfirst.frc.team4529.framework.ShootingWheelState;
+import org.usfirst.frc.team4529.robot.exceptions.ArmAngleNotSetException;
 
 /**
  * Holds the state of the robot and updates all the states in other classes.
@@ -167,9 +168,16 @@ public class RobotState extends Thread
 
     /**
      * @return the robotDesiredArmAngle
+     * @throws ArmAngleNotSetException
+     *             if the arm angle has not been set yet.
      */
-    public Angle getRobotDesiredArmAngle()
+    public Angle getRobotDesiredArmAngle() throws ArmAngleNotSetException
     {
+	if(this.robotDesiredArmAngle == null)
+	{
+	    throw new ArmAngleNotSetException();
+	}
+
 	return this.robotDesiredArmAngle;
     }
 

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4529.robot;
 
 import org.usfirst.frc.team4529.framework.Angle;
+import org.usfirst.frc.team4529.robot.exceptions.ArmAngleNotSetException;
 import org.usfirst.frc.team4529.robot.exceptions.ArmPastMaximumExtensionException;
 
 /**
@@ -14,7 +15,7 @@ public class RobotArm extends Thread
 {
     // TODO: Check arm max physical angle
     private static Angle ARM_LOWEST_ANGLE = Angle.ZERO;
-    private static Angle ARM_HIGHEST_ANGLE = Angle.NINTY;
+    private static Angle ARM_HIGHEST_ANGLE = Angle.SIXTY;
     private volatile Angle armAngle;
     private boolean angleSet = false;
     private static RobotArm instance = null;
@@ -81,7 +82,15 @@ public class RobotArm extends Thread
     {
 	if(this.robotState.isResumeDesiredMotion())
 	{
-	    this.setAngle(robotState.getRobotDesiredArmAngle());
+	    try
+	    {
+		this.setAngle(robotState.getRobotDesiredArmAngle());
+	    }
+	    catch(ArmAngleNotSetException e)
+	    {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
 	}
 
 	if(angleSet)
@@ -92,6 +101,18 @@ public class RobotArm extends Thread
 		this.angleSet = false;
 	    }
 	    catch(ArmPastMaximumExtensionException e)
+	    {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	}
+	else
+	{
+	    try
+	    {
+		throw new ArmAngleNotSetException();
+	    }
+	    catch(ArmAngleNotSetException e)
 	    {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

@@ -57,6 +57,7 @@ public class Robot extends IterativeRobot
 	robotArm = RobotArm.getInstance();
 	robotShooter = RobotShooter.getInstance();
 	joystick = new Joystick(JOYSTICK_PORT);
+
 	try
 	{
 	    driveBase = new FourWheel();
@@ -89,21 +90,26 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-	// If the joystick is boing used or the pause button is pressed
 	if(joystick.getMagnitude() > 0.05 || joystick.getRawButton(JOYSTICK_PAUSE_RESUME_BUTTON))
 	{
 	    for(Thread t : pausableThreads)
 	    {
-		t.interrupt();
+		if(!t.isInterrupted())
+		{
+		    t.interrupt();
+		}
 	    }
-	    driveBase.joystickMove(joystick.getX(), joystick.getY());
+	    driveBase.joystickMove(joystick);
 	    robotState.setResumeDesiredMotion(true);
 	}
 	else if(joystick.getRawButton(JOYSTICK_STOP_BUTTON))
 	{
 	    for(Thread t : pausableThreads)
 	    {
-		t.interrupt();
+		if(!t.isInterrupted())
+		{
+		    t.interrupt();
+		}
 	    }
 	    robotState.setResumeDesiredMotion(false);
 	}
