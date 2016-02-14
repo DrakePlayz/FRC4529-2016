@@ -10,7 +10,7 @@ import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException
  */
 public class FourWheel extends DriveBase
 {
-    RobotState roboteState = RobotState.getInstance();
+    RobotState robotState = RobotState.getInstance();
 
     public FourWheel() throws DriveBaseAlreadyExistsException
     {
@@ -33,6 +33,7 @@ public class FourWheel extends DriveBase
     @Override
     public void moveTo(Position position)
     {
+	this.robotState.setRobotDesiredPosition(position);
 	// TODO Auto-generated method stub
 
     }
@@ -47,6 +48,7 @@ public class FourWheel extends DriveBase
     @Override
     public void moveBy(Position position)
     {
+	this.robotState.setRobotDesiredPosition(robotState.getRobotPosition().add(position));
 	// TODO Auto-generated method stub
 
     }
@@ -64,4 +66,12 @@ public class FourWheel extends DriveBase
 
     }
 
+    @Override
+    public void run()
+    {
+	if(this.robotState.isResumeDesiredMotion())
+	{
+	    this.moveTo(this.robotState.getRobotDesiredPosition());
+	}
+    }
 }

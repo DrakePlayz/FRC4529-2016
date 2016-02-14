@@ -18,6 +18,7 @@ public class RobotArm extends Thread
     private volatile Angle armAngle;
     private boolean angleSet = false;
     private static RobotArm instance = null;
+    private RobotState robotState = RobotState.getInstance();
 
     /**
      * Private constructor to make sure nobody cheats.
@@ -66,6 +67,7 @@ public class RobotArm extends Thread
     public void setAngle(Angle angle)
     {
 	this.armAngle = angle;
+	this.robotState.setRobotDesiredArmAngle(angle);
 	this.angleSet = true;
     }
 
@@ -77,6 +79,11 @@ public class RobotArm extends Thread
     @Override
     public void run()
     {
+	if(this.robotState.isResumeDesiredMotion())
+	{
+	    this.setAngle(robotState.getRobotDesiredArmAngle());
+	}
+
 	if(angleSet)
 	{
 	    try
@@ -100,8 +107,7 @@ public class RobotArm extends Thread
     @Override
     public void interrupt()
     {
-	super.interrupt();
-
 	this.angleSet = false;
+	super.interrupt();
     }
 }

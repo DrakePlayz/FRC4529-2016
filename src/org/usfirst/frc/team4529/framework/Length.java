@@ -54,4 +54,16 @@ public class Length
     {
 	return new Length(length1.getValue() + length2.getValue());
     }
+
+    /**
+     * Adds a length value to *this* length value.
+     * 
+     * @param toAdd
+     *            the length to add to *this*
+     * @return the sum of *this* length value and the <b>toAdd</b>.
+     */
+    public Length add(Length toAdd)
+    {
+	return Length.add(this, toAdd);
+    }
 }

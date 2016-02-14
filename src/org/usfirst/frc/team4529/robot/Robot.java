@@ -19,6 +19,7 @@ public class Robot extends IterativeRobot
 {
     private static final int JOYSTICK_PORT = 0;
     private static final int JOYSTICK_STOP_BUTTON = 1;
+    private static final int JOYSTICK_PAUSE_RESUME_BUTTON = 2;
     private RobotArm robotArm;
     private RobotState robotState;
     private RobotShooter robotShooter;
@@ -88,26 +89,23 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-	if(joystick.getMagnitude() > 0.05)
+	// If the joystick is boing used or the pause button is pressed
+	if(joystick.getMagnitude() > 0.05 || joystick.getRawButton(JOYSTICK_PAUSE_RESUME_BUTTON))
 	{
+	    for(Thread t : pausableThreads)
+	    {
+		t.interrupt();
+	    }
 	    driveBase.joystickMove(joystick.getX(), joystick.getY());
-	    try
-	    {
-		for(Thread t : pausableThreads)
-		{
-		    t.wait();
-		}
-	    }
-	    catch(InterruptedException e)
-	    {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
+	    robotState.setResumeDesiredMotion(true);
 	}
 	else if(joystick.getRawButton(JOYSTICK_STOP_BUTTON))
 	{
-	    robotArm.interrupt();
-	    robotShooter.interrupt();
+	    for(Thread t : pausableThreads)
+	    {
+		t.interrupt();
+	    }
+	    robotState.setResumeDesiredMotion(false);
 	}
 	else
 	{
@@ -127,6 +125,7 @@ public class Robot extends IterativeRobot
 		}
 	    }
 	}
+
     }
 
     /**

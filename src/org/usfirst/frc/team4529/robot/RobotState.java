@@ -12,9 +12,14 @@ import org.usfirst.frc.team4529.framework.ShootingWheelState;
  */
 public class RobotState extends Thread
 {
-    private Position robotPosition;
-    private Angle orientation;
-    private Angle armAngle;
+    private Position robotCurrentPosition;
+    private Position robotDesiredPosition;
+    private Angle robotCurrentOrientation;
+    private Angle robotDesiredOrientation;
+    private Angle robotCurrentArmAngle;
+    private Angle robotDesiredArmAngle;
+    private boolean resumeDesiredMotion;
+
     private boolean ballCollected;
     private ShootingWheelState shootingWheelState;
     private static RobotState instance = null;
@@ -46,7 +51,7 @@ public class RobotState extends Thread
      */
     public Position getRobotPosition()
     {
-	return this.robotPosition;
+	return this.robotCurrentPosition;
     }
 
     /**
@@ -55,7 +60,7 @@ public class RobotState extends Thread
      */
     private void setRobotPosition(Position robotPosition)
     {
-	this.robotPosition = robotPosition;
+	this.robotCurrentPosition = robotPosition;
     }
 
     /**
@@ -63,7 +68,7 @@ public class RobotState extends Thread
      */
     public Angle getOrientation()
     {
-	return this.orientation;
+	return this.robotCurrentOrientation;
     }
 
     /**
@@ -72,7 +77,7 @@ public class RobotState extends Thread
      */
     private void setOrientation(Angle orientation)
     {
-	this.orientation = orientation;
+	this.robotCurrentOrientation = orientation;
     }
 
     /**
@@ -80,7 +85,7 @@ public class RobotState extends Thread
      */
     public Angle getArmAngle()
     {
-	return this.armAngle;
+	return this.robotCurrentArmAngle;
     }
 
     /**
@@ -89,7 +94,7 @@ public class RobotState extends Thread
      */
     private void setArmAngle(Angle armAngle)
     {
-	this.armAngle = armAngle;
+	this.robotCurrentArmAngle = armAngle;
     }
 
     /**
@@ -124,6 +129,74 @@ public class RobotState extends Thread
     private void setShootingWheelState(ShootingWheelState shootingWheelState)
     {
 	this.shootingWheelState = shootingWheelState;
+    }
+
+    /**
+     * @return the robotDesiredPosition
+     */
+    public Position getRobotDesiredPosition()
+    {
+	return this.robotDesiredPosition;
+    }
+
+    /**
+     * @param robotDesiredPosition
+     *            the robotDesiredPosition to set
+     */
+    public void setRobotDesiredPosition(Position robotDesiredPosition)
+    {
+	this.robotDesiredPosition = robotDesiredPosition;
+    }
+
+    /**
+     * @return the robotDesiredOrientation
+     */
+    public Angle getRobotDesiredOrientation()
+    {
+	return this.robotDesiredOrientation;
+    }
+
+    /**
+     * @param robotDesiredOrientation
+     *            the robotDesiredOrientation to set
+     */
+    public void setRobotDesiredOrientation(Angle robotDesiredOrientation)
+    {
+	this.robotDesiredOrientation = robotDesiredOrientation;
+    }
+
+    /**
+     * @return the robotDesiredArmAngle
+     */
+    public Angle getRobotDesiredArmAngle()
+    {
+	return this.robotDesiredArmAngle;
+    }
+
+    /**
+     * @param robotDesiredArmAngle
+     *            the robotDesiredArmAngle to set
+     */
+    public void setRobotDesiredArmAngle(Angle robotDesiredArmAngle)
+    {
+	this.robotDesiredArmAngle = robotDesiredArmAngle;
+    }
+
+    /**
+     * @return the resumeDesiredMotion
+     */
+    public boolean isResumeDesiredMotion()
+    {
+	return resumeDesiredMotion;
+    }
+
+    /**
+     * @param resumeDesiredMotion
+     *            the resumeDesiredMotion to set
+     */
+    public void setResumeDesiredMotion(boolean resumeDesiredMotion)
+    {
+	this.resumeDesiredMotion = resumeDesiredMotion;
     }
 
     /*
