@@ -2,6 +2,12 @@ package org.usfirst.frc.team4529.framework;
 
 import Jama.Matrix;
 
+/**
+ * Generates a cubic path for the robot.
+ * 
+ * @author frogg
+ *
+ */
 public class CubicPathGenerator
 {
     private Position startingPosition;
@@ -9,6 +15,18 @@ public class CubicPathGenerator
     private Position endingPosition;
     private Angle endingAngle;
 
+    /**
+     * The constructor for the cubic path generator.
+     * 
+     * @param startingPosition
+     *            the path starting position.
+     * @param startingAngle
+     *            the path starting gradient or angle.
+     * @param endingPosition
+     *            the desired finishing position.
+     * @param endingAngle
+     *            the desired finishing angle.
+     */
     public CubicPathGenerator(Position startingPosition, Angle startingAngle, Position endingPosition,
 	    Angle endingAngle)
     {
@@ -18,7 +36,12 @@ public class CubicPathGenerator
 	this.endingAngle = endingAngle;
     }
 
-    private void generateCubic()
+    /**
+     * Generates the cubic curve with matrix solving Ax = B.
+     * 
+     * @return a matrix of the coefficients of the cubic.
+     */
+    public Matrix generateCubic()
     {
 	double startingX = startingPosition.getX().getValue();
 	double startingY = startingPosition.getY().getValue();
@@ -36,10 +59,7 @@ public class CubicPathGenerator
 
 	Matrix matrixA = new Matrix(coefficientMatrix);
 	Matrix matrixB = new Matrix(answerMatrix);
-	Matrix matrixX = matrixA.inverse().times(matrixB);
-
-	System.out.println("y = " + matrixX.get(0, 0) + "x^3 + " + matrixX.get(1, 0) + "x^2 + " + matrixX.get(2, 0)
-		+ "x + " + matrixX.get(3, 0));
+	return matrixA.inverse().times(matrixB);
     }
 
     // the double derivative of that solution can never be greater than our
