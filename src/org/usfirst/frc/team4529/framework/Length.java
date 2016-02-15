@@ -8,6 +8,7 @@ package org.usfirst.frc.team4529.framework;
  */
 public class Length
 {
+    public static final Length ZERO = new Length(0);
     private double value;
 
     /**

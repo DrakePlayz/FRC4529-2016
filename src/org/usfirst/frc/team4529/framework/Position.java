@@ -8,6 +8,7 @@ package org.usfirst.frc.team4529.framework;
  */
 public class Position
 {
+    public static final Position ORIGIN = new Position(Length.ZERO, Length.ZERO);
     private Length x;
     private Length y;
 
