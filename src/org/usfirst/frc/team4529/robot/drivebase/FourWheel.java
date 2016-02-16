@@ -72,58 +72,69 @@ public class FourWheel extends DriveBase
      * first.wpilibj.Joystick)
      */
     @Override
-    public void joystickMove(Joystick joystick)
-    {
-	double x = joystick.getRawAxis(0);
-	double z = joystick.getRawAxis(2);
-	double slider = joystick.getRawAxis(3);
-	double desiredAngle = joystick.getDirectionRadians();
-	double leftMotorPower = 0;
-	double rightMotorPower = 0;
-
-	// sign is -1 if joystick is back 1 if joystick is forward
-
-	// if joystick is right &&
-	// if joystick is left????
-	if(x < 0)
-	{
-	    leftMotorPower = 1;
-	    rightMotorPower = Math.cos(2 * desiredAngle + Math.PI);
-	}
-	else
-	{
-	    leftMotorPower = Math.cos(2 * desiredAngle + Math.PI);
-	    rightMotorPower = 1;
-	}
-
-	double mainStickMagnitude = joystick.getMagnitude() / Math.sqrt(2);
-	slider = ((-slider + 1) / 2);
-
-	// SmartDashboard.putNumber("Left Motor Power MAX", leftMotorPower);
-	// SmartDashboard.putNumber("Right Motor Power MAX", rightMotorPower);
-
-	leftMotorPower = leftMotorPower * slider * mainStickMagnitude;
-	rightMotorPower = rightMotorPower * slider * mainStickMagnitude;
-
-	// SmartDashboard.putNumber("Magnitude", mainStickMagnitude);
-	// SmartDashboard.putNumber("Slider", slider);
-	// SmartDashboard.putNumber("Left Motor Power Mapped", leftMotorPower);
-	// SmartDashboard.putNumber("Right Motor Power Mapped",
-	// rightMotorPower);
-	// SmartDashboard.putNumber("Desired Angle", desiredAngle);
-
-	if(mainStickMagnitude > 0.1 | Math.abs(z) > 0.15)
-	{
-	    leftMotor.set(leftMotorPower);
-	    rightMotor.set(-rightMotorPower);
-	}
-	else
-	{
-	    leftMotor.set(0);
-	    rightMotor.set(0);
-	}
+    public void drive(double x, double y, double z, double slider, boolean squaredInputs){
+		
+		double desiredAngle = Math.atan(y/x);
+		double leftMotorPower = 0;
+		double rightMotorPower = 0;
+	
+		// sign is -1 if joystick is back 1 if joystick is forward
+	
+		// if joystick is right &&
+		// if joystick is left????
+		if (y>0) {
+			leftMotorPower = y + 1;
+			rightMotorPower = y + Math.cos(2 * desiredAngle + Math.PI);
+		} else {
+			leftMotorPower = y - Math.cos(2 * desiredAngle + Math.PI);
+			rightMotorPower = y - 1;
+		}
+	
+		double mainStickMagnitude = joystick.getMagnitude() / Math.sqrt(2);
+		slider = ((-slider + 1) / 2);
+	
+		// SmartDashboard.putNumber("Left Motor Power MAX", leftMotorPower);
+		// SmartDashboard.putNumber("Right Motor Power MAX", rightMotorPower);
+	
+		leftMotorPower = leftMotorPower*slider*mainStickMagnitude/2;
+		rightMotorPower = rightMotorPower*slider*mainStickMagnitude/2;
+		
+		if(squaredInputs) {
+			leftMotorPower = leftMotorPower * leftMotorPower;
+			rightMotorPower = rightMotorPower * rightMotorPower;
+		}
+	
+		// SmartDashboard.putNumber("Magnitude", mainStickMagnitude);
+		// SmartDashboard.putNumber("Slider", slider);
+		// SmartDashboard.putNumber("Left Motor Power Mapped", leftMotorPower);
+		// SmartDashboard.putNumber("Right Motor Power Mapped",
+		// rightMotorPower);
+		// SmartDashboard.putNumber("Desired Angle", desiredAngle);
+	
+		if(mainStickMagnitude > 0.1 | Math.abs(z) > 0.15)
+		{
+		    leftMotor.set(leftMotorPower);
+		    rightMotor.set(-rightMotorPower);
+		}
+		else
+		{
+		    leftMotor.set(0);
+		    rightMotor.set(0);
+		}
     }
-
+    
+    /*
+     * Devon please java doc this correctly
+     */
+	public void drive(Joystick mainStick){
+		double x = mainStick.getRawAxis(0);
+		double y = mainStick.getRawAxis(1);
+		double z = mainStick.getRawAxis(2);
+		double slider = mainStick.getRawAxis(3);
+		
+		drive(x,y,z,slider,false);
+	}
+    
     /*
      * (non-Javadoc)
      * 
