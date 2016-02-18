@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4529.robot.drivebase;
 
 import org.usfirst.frc.team4529.framework.Angle;
+import org.usfirst.frc.team4529.framework.CubicPathGenerator;
 import org.usfirst.frc.team4529.framework.Position;
 import org.usfirst.frc.team4529.robot.RobotState;
 import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException;
@@ -15,9 +16,12 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class FourWheel extends DriveBase
 {
+    private static final int LEFT_MOTOR_PORT = 1;
+    private static final int RIGHT_MOTOR_PORT = 0;
+
     private RobotState robotState = RobotState.getInstance();
-    private Talon leftMotor;
-    private Talon rightMotor;
+    private Talon leftMotor = new Talon(LEFT_MOTOR_PORT);
+    private Talon rightMotor = new Talon(RIGHT_MOTOR_PORT);
 
     /**
      * Constructor that follows a weird implementation of a singleton.
@@ -45,10 +49,12 @@ public class FourWheel extends DriveBase
     @Override
     public void moveTo(Position position, Angle orientation)
     {
+	CubicPathGenerator path = new CubicPathGenerator(this.robotState.getRobotCurrentPosition(),
+		this.robotState.getRobotCurrentOrientation(), position, orientation);
 	this.robotState.setRobotDesiredPosition(position);
 	this.robotState.setRobotDesiredOrientation(orientation);
-	// TODO Auto-generated method stub
 
+	// TODO Auto-generated method stub
     }
 
     /*
@@ -61,10 +67,13 @@ public class FourWheel extends DriveBase
     @Override
     public void moveBy(Position position, Angle orientation)
     {
-	this.robotState.setRobotDesiredPosition(robotState.getRobotPosition().add(position));
-	this.robotState.setRobotDesiredOrientation(robotState.getOrientation().add(orientation));
+	Position finalPosition = this.robotState.getRobotCurrentPosition().add(position);
+	Angle finalOrientation = this.robotState.getRobotCurrentOrientation().add(orientation);
+	CubicPathGenerator path = new CubicPathGenerator(this.robotState.getRobotCurrentPosition(),
+		this.robotState.getRobotCurrentOrientation(), finalPosition, finalOrientation);
+	this.robotState.setRobotDesiredPosition(finalPosition);
+	this.robotState.setRobotDesiredOrientation(finalOrientation);
 	// TODO Auto-generated method stub
-
     }
 
     /*
@@ -78,53 +87,76 @@ public class FourWheel extends DriveBase
     public void joystickMove(Joystick joystick)
     {
 	double x = joystick.getRawAxis(0);
-	double z = joystick.getRawAxis(2);
-	double slider = joystick.getRawAxis(3);
-	double desiredAngle = joystick.getDirectionRadians();
+	double y = -joystick.getRawAxis(1); // y axis is reversed on joystick
+	double z = joystick.getRawAxis(2); // joystick twist, anti-clockwise
+					   // positive
+	double percentPower = (-joystick.getRawAxis(3) + 1) / 2; // rawAxis(3)
+								 // goes from 1
+								 // at bottom to
+								 // -1 at top
+	double joystickAngle = joystick.getDirectionRadians();
+	double mainStickMagnitude = joystick.getMagnitude() / Math.sqrt(2);
 	double leftMotorPower = 0;
 	double rightMotorPower = 0;
 
-	// sign is -1 if joystick is back 1 if joystick is forward
-
-	// if joystick is right &&
-	// if joystick is left????
-	if(x < 0)
-	{
-	    leftMotorPower = 1;
-	    rightMotorPower = Math.cos(2 * desiredAngle + Math.PI);
+	if(Math.abs(z) > 0.15)
+	{// clockwise is negative
+	    leftMotorPower = Math.pow(z, 2);
+	    rightMotorPower = Math.pow(z, 2);
+	    if(z < 0)
+	    {
+		rightMotorPower = -rightMotorPower;
+	    }
+	    else
+	    {
+		leftMotorPower = -leftMotorPower;
+	    }
+	}
+	else if(x < 0)
+	{// joystick left
+	    leftMotorPower = Math.sin(joystickAngle);
+	    if(y > 0)
+	    {// forward
+		rightMotorPower = mainStickMagnitude;
+	    }
+	    else
+	    {// backward
+		rightMotorPower = -mainStickMagnitude;
+	    }
 	}
 	else
-	{
-	    leftMotorPower = Math.cos(2 * desiredAngle + Math.PI);
-	    rightMotorPower = 1;
+	{// joystick right
+	    rightMotorPower = Math.sin(joystickAngle);
+	    if(y > 0)
+	    {// forward
+		leftMotorPower = mainStickMagnitude;
+	    }
+	    else
+	    {// backward
+		leftMotorPower = -mainStickMagnitude;
+	    }
 	}
 
-	double mainStickMagnitude = joystick.getMagnitude() / Math.sqrt(2);
-	slider = ((-slider + 1) / 2);
+	driveMotors(leftMotorPower, rightMotorPower, percentPower);
+    }
 
-	// SmartDashboard.putNumber("Left Motor Power MAX", leftMotorPower);
-	// SmartDashboard.putNumber("Right Motor Power MAX", rightMotorPower);
-
-	leftMotorPower = leftMotorPower * slider * mainStickMagnitude;
-	rightMotorPower = rightMotorPower * slider * mainStickMagnitude;
-
-	// SmartDashboard.putNumber("Magnitude", mainStickMagnitude);
-	// SmartDashboard.putNumber("Slider", slider);
-	// SmartDashboard.putNumber("Left Motor Power Mapped", leftMotorPower);
-	// SmartDashboard.putNumber("Right Motor Power Mapped",
-	// rightMotorPower);
-	// SmartDashboard.putNumber("Desired Angle", desiredAngle);
-
-	if(mainStickMagnitude > 0.1 | Math.abs(z) > 0.15)
-	{
-	    leftMotor.set(leftMotorPower);
-	    rightMotor.set(-rightMotorPower);
-	}
-	else
-	{
-	    leftMotor.set(0);
-	    rightMotor.set(0);
-	}
+    /**
+     * Drive the motors associated with the drive base.
+     * 
+     * @param leftMotorPower
+     *            the power for the left motor.
+     * @param rightMotorPower
+     *            the power for the left motor.
+     * @param percentPower
+     *            the power scaling percentage for both motors.
+     */
+    private void driveMotors(double leftMotorPower, double rightMotorPower, double percentPower)
+    {
+	// TODO Auto-generated method stub
+	double leftMotorSpeed = leftMotorPower * percentPower;
+	double rightMotorSpeed = rightMotorPower * percentPower;
+	leftMotor.set(leftMotorSpeed);
+	rightMotor.set(-rightMotorSpeed);
     }
 
     /*

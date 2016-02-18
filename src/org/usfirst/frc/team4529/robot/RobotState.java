@@ -50,7 +50,7 @@ public class RobotState extends Thread
     /**
      * @return the robotPosition
      */
-    public Position getRobotPosition()
+    public Position getRobotCurrentPosition()
     {
 	return this.robotCurrentPosition;
     }
@@ -67,7 +67,7 @@ public class RobotState extends Thread
     /**
      * @return the orientation
      */
-    public Angle getOrientation()
+    public Angle getRobotCurrentOrientation()
     {
 	return this.robotCurrentOrientation;
     }
