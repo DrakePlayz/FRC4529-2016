@@ -12,11 +12,13 @@ public enum Location
     /*
      * Length x;
      * Length y;
+     * String name;
      * 
-     * private Location(Length x, Length y)
+     * private Location(Length x, Length y, String name)
      * {
      * this.x = x;
      * this.y = y;
+     * this.name = name;
      * }
      */
 }
