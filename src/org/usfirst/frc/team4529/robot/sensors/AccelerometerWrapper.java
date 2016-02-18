@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4529.robot.sensors;
 
 /**
- * 
+ * A three accelerometer wrapper.
  * 
  * @author frogg
  *

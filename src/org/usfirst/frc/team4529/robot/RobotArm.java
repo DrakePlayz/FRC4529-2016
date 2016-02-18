@@ -26,7 +26,7 @@ public class RobotArm extends Thread
      */
     private RobotArm()
     {
-
+	// intentionally left empty
     }
 
     /**

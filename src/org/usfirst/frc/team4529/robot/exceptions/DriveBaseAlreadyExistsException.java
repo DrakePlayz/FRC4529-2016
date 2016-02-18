@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4529.robot.exceptions;
 
 /**
+ * The exception for when a drive base is created but one already exists in
+ * code.
  * 
  * @author frogg
  *
@@ -18,6 +20,7 @@ public class DriveBaseAlreadyExistsException extends Exception
      * The constructor which passes a message on to the exception class message.
      * 
      * @param msg
+     *            the message for the exception.
      */
     public DriveBaseAlreadyExistsException(String msg)
     {

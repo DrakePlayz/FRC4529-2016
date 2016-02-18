@@ -20,6 +20,7 @@ public class FourWheel extends DriveBase
     private Talon rightMotor;
 
     /**
+     * Constructor that follows a weird implementation of a singleton.
      * 
      * @throws DriveBaseAlreadyExistsException
      */

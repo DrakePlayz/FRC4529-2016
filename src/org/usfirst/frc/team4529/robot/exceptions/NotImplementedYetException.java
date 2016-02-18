@@ -23,6 +23,7 @@ public class NotImplementedYetException extends Exception
      * The constructor which passes a message on to the exception class message.
      * 
      * @param msg
+     *            the message for the exception.
      */
     public NotImplementedYetException(String msg)
     {

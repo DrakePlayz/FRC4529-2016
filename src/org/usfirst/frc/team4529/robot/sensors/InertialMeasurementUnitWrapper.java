@@ -1,5 +1,12 @@
 package org.usfirst.frc.team4529.robot.sensors;
 
+/**
+ * A wrapper for the inertial measurement unit. Since it will be operating on a
+ * robot, no magnetometer data is accessible.
+ * 
+ * @author frogg
+ *
+ */
 public class InertialMeasurementUnitWrapper
 {
     private double accelX;

@@ -1,7 +1,15 @@
 package org.usfirst.frc.team4529.robot.sensors;
 
+/**
+ * A wrapper for a basic switch or button sensor.
+ * 
+ * @author frogg
+ *
+ */
 public class SwitchButtonWrapper
 {
+    private boolean isPressed;
+
     /**
      * @return the isPressed
      */
@@ -18,7 +26,4 @@ public class SwitchButtonWrapper
     {
 	this.isPressed = isPressed;
     }
-
-    private boolean isPressed;
-
 }

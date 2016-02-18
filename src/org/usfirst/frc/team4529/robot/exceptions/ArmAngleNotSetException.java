@@ -1,5 +1,11 @@
 package org.usfirst.frc.team4529.robot.exceptions;
 
+/**
+ * The exception for when the arm is told to move but no angle has been set yet.
+ * 
+ * @author frogg
+ *
+ */
 public class ArmAngleNotSetException extends Exception
 {
     /**
@@ -13,6 +19,7 @@ public class ArmAngleNotSetException extends Exception
      * The constructor which passes a message on to the exception class message.
      * 
      * @param msg
+     *            the message for the exception.
      */
     public ArmAngleNotSetException(String msg)
     {

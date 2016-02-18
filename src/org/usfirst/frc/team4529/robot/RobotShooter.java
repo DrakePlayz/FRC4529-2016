@@ -1,15 +1,32 @@
 package org.usfirst.frc.team4529.robot;
 
+import org.usfirst.frc.team4529.field.Location;
+import org.usfirst.frc.team4529.robot.exceptions.NotInShootingPositionException;
+
+/**
+ * The robot shooter thread that handles pickup and shooting.
+ * 
+ * @author frogg
+ *
+ */
 public class RobotShooter extends Thread
 {
     private static RobotShooter instance = null;
     private static RobotState robotState = RobotState.getInstance();
 
+    /**
+     * Private constructor for singleton.
+     */
     private RobotShooter()
     {
-
+	// intentionally left empty.
     }
 
+    /**
+     * Singleton implementation.
+     * 
+     * @return the instance of the robot shooter.
+     */
     public static RobotShooter getInstance()
     {
 	if(instance == null)

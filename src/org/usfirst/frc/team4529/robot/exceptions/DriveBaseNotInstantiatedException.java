@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4529.robot.exceptions;
 
 /**
+ * The exception thrown when no drive base has been instatiated yet and
+ * attempted access is made.
+ * 
  * @author frogg
  *
  */
@@ -17,6 +20,7 @@ public class DriveBaseNotInstantiatedException extends Exception
      * The constructor which passes a message on to the exception class message.
      * 
      * @param msg
+     *            the message for the exception.
      */
     public DriveBaseNotInstantiatedException(String msg)
     {

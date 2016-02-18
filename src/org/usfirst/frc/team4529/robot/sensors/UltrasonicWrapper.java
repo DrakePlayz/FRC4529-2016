@@ -1,5 +1,11 @@
 package org.usfirst.frc.team4529.robot.sensors;
 
+/**
+ * A wrapper for the ultrasonic sensor.
+ * 
+ * @author frogg
+ *
+ */
 public class UltrasonicWrapper
 {
     private double distance;

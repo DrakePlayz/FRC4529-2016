@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.usfirst.frc.team4529.field.exceptions;
 
 /**

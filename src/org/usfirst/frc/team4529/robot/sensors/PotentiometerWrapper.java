@@ -1,25 +1,30 @@
 package org.usfirst.frc.team4529.robot.sensors;
 
+/**
+ * The potentiometer wrapper. It makes more sense to return a percentage of
+ * maximum making the max and min values potentiometer specific.
+ * 
+ * @author frogg
+ *
+ */
 public class PotentiometerWrapper
 {
-    private double turns;
-    private static double MAX_VALUE = 1;
-    private static double MIN_VALUE = 0;
+    private double percentageUse;
 
     /**
-     * @return the turns
+     * @return the percentageUse
      */
-    public double getTurns()
+    public double getPercentageUse()
     {
-	return this.turns;
+	return this.percentageUse;
     }
 
     /**
-     * @param turns
-     *            the turns to set
+     * @param percentageUse
+     *            the percentageUse to set
      */
-    public void setTurns(double turns)
+    public void setPercentageUse(double percentageUse)
     {
-	this.turns = turns;
+	this.percentageUse = percentageUse;
     }
 }
