@@ -57,6 +57,18 @@ public class Angle
     }
 
     /**
+     * Nonstatic add. Adds an angle to *this* angle.
+     * 
+     * @param angleToAdd
+     *            the angle to add to *this* angle.
+     * @return the sum of *this* angle and <i>angleToAdd</i>.
+     */
+    public Angle add(Angle angleToAdd)
+    {
+	return new Angle(this.getValue() + angleToAdd.getValue());
+    }
+
+    /**
      * This calculates the basic angle of an angle. (An angle between 0
      * and 90)
      * 
