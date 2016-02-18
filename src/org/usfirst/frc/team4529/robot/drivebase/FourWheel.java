@@ -46,6 +46,7 @@ public class FourWheel extends DriveBase
     public void moveTo(Position position, Angle orientation)
     {
 	this.robotState.setRobotDesiredPosition(position);
+	this.robotState.setRobotDesiredOrientation(orientation);
 	// TODO Auto-generated method stub
 
     }
@@ -61,6 +62,7 @@ public class FourWheel extends DriveBase
     public void moveBy(Position position, Angle orientation)
     {
 	this.robotState.setRobotDesiredPosition(robotState.getRobotPosition().add(position));
+	this.robotState.setRobotDesiredOrientation(robotState.getOrientation().add(orientation));
 	// TODO Auto-generated method stub
 
     }
