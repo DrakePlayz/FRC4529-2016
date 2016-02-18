@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4529.robot;
 
+import org.usfirst.frc.team4529.field.Location;
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.framework.Position;
-import org.usfirst.frc.team4529.framework.ShootingWheelState;
 import org.usfirst.frc.team4529.robot.exceptions.ArmAngleNotSetException;
 
 /**
@@ -20,9 +20,9 @@ public class RobotState extends Thread
     private Angle robotCurrentArmAngle;
     private Angle robotDesiredArmAngle;
     private boolean resumeDesiredMotion;
-
+    private boolean robotArmExtended;
     private boolean ballCollected;
-    private ShootingWheelState shootingWheelState;
+
     private static RobotState instance = null;
 
     /**
@@ -30,7 +30,7 @@ public class RobotState extends Thread
      */
     private RobotState()
     {
-
+	// intentionally left empty.
     }
 
     /**
@@ -76,7 +76,7 @@ public class RobotState extends Thread
      * @param orientation
      *            the orientation to set
      */
-    private void setOrientation(Angle orientation)
+    private void setRobotOrientation(Angle orientation)
     {
 	this.robotCurrentOrientation = orientation;
     }
@@ -93,7 +93,7 @@ public class RobotState extends Thread
      * @param armAngle
      *            the armAngle to set
      */
-    private void setArmAngle(Angle armAngle)
+    private void setRobotArmAngle(Angle armAngle)
     {
 	this.robotCurrentArmAngle = armAngle;
     }
@@ -110,26 +110,9 @@ public class RobotState extends Thread
      * @param ballCollected
      *            the ballCollected to set
      */
-    private void setBallCollected(boolean ballCollected)
+    public void setBallCollected(boolean ballCollected)
     {
 	this.ballCollected = ballCollected;
-    }
-
-    /**
-     * @return the shootingWheelState
-     */
-    public ShootingWheelState getShootingWheelState()
-    {
-	return this.shootingWheelState;
-    }
-
-    /**
-     * @param shootingWheelState
-     *            the shootingWheelState to set
-     */
-    private void setShootingWheelState(ShootingWheelState shootingWheelState)
-    {
-	this.shootingWheelState = shootingWheelState;
     }
 
     /**
@@ -207,6 +190,36 @@ public class RobotState extends Thread
 	this.resumeDesiredMotion = resumeDesiredMotion;
     }
 
+    /**
+     * @return the robotArmExtended
+     */
+    public boolean isRobotArmExtended()
+    {
+	return robotArmExtended;
+    }
+
+    /**
+     * @param robotArmExtended
+     *            the robotArmExtended to set
+     */
+    public void setRobotArmExtended(boolean robotArmExtended)
+    {
+	this.robotArmExtended = robotArmExtended;
+    }
+
+    /**
+     * 
+     * @param desiredLocation
+     * @return
+     */
+    public boolean checkPosition(Location desiredLocation)
+    {
+	// TODO Auto-generated method stub
+	// if the current location is within a range of the desired location
+	// return true.
+	return false;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -218,6 +231,9 @@ public class RobotState extends Thread
 	while(true)
 	{
 	    // TODO: get values from all the sensors and update the information.
+	    setRobotPosition(Position.ORIGIN);
+	    setRobotOrientation(Angle.ZERO);
+	    setRobotArmAngle(Angle.ZERO);
 	}
     }
 }
