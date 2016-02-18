@@ -26,6 +26,7 @@ public class Robot extends IterativeRobot
     private Joystick joystick;
     private DriveBase driveBase;
     private ArrayDeque<Thread> pausableThreads = new ArrayDeque<Thread>();
+    private boolean startThreads;
 
     /**
      * This function is run once each time the robot enters autonomous mode
@@ -112,8 +113,10 @@ public class Robot extends IterativeRobot
 		}
 	    }
 	    robotState.setResumeDesiredMotion(false);
+	    startThreads = false;
 	}
-	else
+
+	if(startThreads)
 	{
 	    for(Thread t : pausableThreads)
 	    {
@@ -131,7 +134,6 @@ public class Robot extends IterativeRobot
 		}
 	    }
 	}
-
     }
 
     /**
@@ -142,5 +144,4 @@ public class Robot extends IterativeRobot
     {
 	LiveWindow.run();
     }
-
 }
