@@ -1,9 +1,11 @@
 package org.usfirst.frc.team4529.robot;
 
 import java.util.ArrayDeque;
+import java.util.EnumSet;
 import org.usfirst.frc.team4529.robot.drivebase.DriveBase;
 import org.usfirst.frc.team4529.robot.drivebase.FourWheel;
 import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException;
+import org.usfirst.frc.team4529.robot.framework.JoystickButtons;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -18,8 +20,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot
 {
     private static final int JOYSTICK_PORT = 0;
-    private static final int JOYSTICK_STOP_BUTTON = 1;
-    private static final int JOYSTICK_PAUSE_RESUME_BUTTON = 2;
+    private static final EnumSet JB = EnumSet.allOf(JoystickButtons.class);
     private RobotArm robotArm;
     private RobotState robotState;
     private RobotShooter robotShooter;
@@ -91,7 +92,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-	if(joystick.getMagnitude() > 0.05 || joystick.getRawButton(JOYSTICK_PAUSE_RESUME_BUTTON))
+	if(joystick.getMagnitude() > 0.05 || joystick.getRawButton(JoystickButtons.PAUSE_RESUME_AUTO.getButtonNum()))
 	{
 	    for(Thread t : pausableThreads)
 	    {
@@ -103,7 +104,7 @@ public class Robot extends IterativeRobot
 	    driveBase.joystickMove(joystick);
 	    robotState.setResumeDesiredMotion(true);
 	}
-	else if(joystick.getRawButton(JOYSTICK_STOP_BUTTON))
+	else if(joystick.getRawButton(JoystickButtons.STOP_AUTO.getButtonNum()))
 	{
 	    for(Thread t : pausableThreads)
 	    {

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4529.framework;
+package org.usfirst.frc.team4529.robot.framework;
 
 /**
  * Defines what state the shooting wheels can be in.
