@@ -1,12 +1,14 @@
 package org.usfirst.frc.team4529.robot.framework;
 
+import java.util.EnumSet;
+
 /**
  * Class to define all the joystick buttons.
  * 
  * @author frogg
  *
  */
-public enum JoystickButtons
+public enum LogitechJoystickButtons
 {
     /**
      * Fully stop and kill any autonomous actions in driving and shooting.
@@ -53,7 +55,7 @@ public enum JoystickButtons
     /**
      * Retract the arm.
      */
-    RETRAC_ARM(9),
+    RETRACT_ARM(9),
 
     /**
      * Spin collection wheels.
@@ -67,13 +69,13 @@ public enum JoystickButtons
 
     private int buttonNum;
 
-    private JoystickButtons(int buttonNum)
+    private LogitechJoystickButtons(int buttonNum)
     {
 	setButtonNum(buttonNum);
     }
 
     /**
-     * @return the buttonNum
+     * @return the buttonNum.
      */
     public int getButtonNum()
     {
@@ -82,10 +84,33 @@ public enum JoystickButtons
 
     /**
      * @param buttonNum
-     *            the buttonNum to set
+     *            the buttonNum to set.
      */
     public void setButtonNum(int buttonNum)
     {
 	this.buttonNum = buttonNum;
+    }
+
+    /**
+     * 
+     * @return The joystick buttons that cancel autonomous arm motion.
+     */
+    public EnumSet<LogitechJoystickButtons> getCancelArmButtons()
+    {
+	EnumSet<LogitechJoystickButtons> cancelArmButtons = EnumSet.allOf(LogitechJoystickButtons.class);
+	cancelArmButtons.remove(SHOOT_PISTON);
+	return cancelArmButtons;
+    }
+
+    /**
+     * 
+     * @return the joystick buttons that cancel autonomous drive motion.
+     */
+    public EnumSet<LogitechJoystickButtons> getCancelDriveButtons()
+    {
+	EnumSet<LogitechJoystickButtons> cancelDriveButtons = EnumSet.noneOf(LogitechJoystickButtons.class);
+	cancelDriveButtons.add(START_COLLECTION);
+	cancelDriveButtons.add(COLLECTION_WHEELS);
+	return cancelDriveButtons;
     }
 }

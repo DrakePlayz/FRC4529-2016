@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import org.usfirst.frc.team4529.robot.drivebase.DriveBase;
 import org.usfirst.frc.team4529.robot.drivebase.FourWheel;
 import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException;
-import org.usfirst.frc.team4529.robot.framework.JoystickButtons;
+import org.usfirst.frc.team4529.robot.framework.LogitechJoystickButtons;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot
 {
     private static final int JOYSTICK_PORT = 0;
-    private static final EnumSet JB = EnumSet.allOf(JoystickButtons.class);
+    private static final EnumSet<LogitechJoystickButtons> JB = EnumSet.allOf(LogitechJoystickButtons.class);
     private RobotArm robotArm;
     private RobotState robotState;
     private RobotShooter robotShooter;
@@ -92,27 +92,24 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-	if(joystick.getMagnitude() > 0.05 || joystick.getRawButton(JoystickButtons.PAUSE_RESUME_AUTO.getButtonNum()))
+	LogitechJoystickButtons buttonPressed = null;
+	for(LogitechJoystickButtons jb : JB)
 	{
-	    for(Thread t : pausableThreads)
+	    if(joystick.getRawButton(jb.getButtonNum()))
 	    {
-		if(!t.isInterrupted())
-		{
-		    t.interrupt();
-		}
+		buttonPressed = jb;
 	    }
+	}
+
+	if(joystick.getMagnitude() > 0.05 || buttonPressed == LogitechJoystickButtons.PAUSE_RESUME_AUTO)
+	{
+	    interruptThreads();
 	    driveBase.joystickMove(joystick);
 	    robotState.setResumeDesiredMotion(true);
 	}
-	else if(joystick.getRawButton(JoystickButtons.STOP_AUTO.getButtonNum()))
+	else if(buttonPressed == LogitechJoystickButtons.STOP_AUTO)
 	{
-	    for(Thread t : pausableThreads)
-	    {
-		if(!t.isInterrupted())
-		{
-		    t.interrupt();
-		}
-	    }
+	    interruptThreads();
 	    robotState.setResumeDesiredMotion(false);
 	    startThreads = false;
 	}
@@ -133,6 +130,20 @@ public class Robot extends IterativeRobot
 
 		    }
 		}
+	    }
+	}
+    }
+
+    /**
+     * Interrupts all the pausable threads.
+     */
+    private void interruptThreads()
+    {
+	for(Thread t : pausableThreads)
+	{
+	    if(!t.isInterrupted())
+	    {
+		t.interrupt();
 	    }
 	}
     }
