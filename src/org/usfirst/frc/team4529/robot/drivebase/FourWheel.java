@@ -155,7 +155,6 @@ public class FourWheel extends DriveBase
      */
     private void driveMotors(double leftMotorPower, double rightMotorPower, double percentPower)
     {
-	// TODO Auto-generated method stub
 	double leftMotorSpeed = leftMotorPower * percentPower;
 	double rightMotorSpeed = rightMotorPower * percentPower;
 	leftMotor.set(leftMotorSpeed);
