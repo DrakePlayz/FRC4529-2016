@@ -49,10 +49,11 @@ public class FourWheel extends DriveBase
     @Override
     public void moveTo(Position position, Angle orientation)
     {
-	CubicPathGenerator path = new CubicPathGenerator(this.robotState.getRobotCurrentPosition(),
-		this.robotState.getRobotCurrentOrientation(), position, orientation);
 	this.robotState.setRobotDesiredPosition(position);
 	this.robotState.setRobotDesiredOrientation(orientation);
+
+	CubicPathGenerator path = new CubicPathGenerator(this.robotState.getRobotCurrentPosition(),
+		this.robotState.getRobotCurrentOrientation(), position, orientation);
 
 	// TODO Auto-generated method stub
     }
@@ -69,10 +70,12 @@ public class FourWheel extends DriveBase
     {
 	Position finalPosition = this.robotState.getRobotCurrentPosition().add(position);
 	Angle finalOrientation = this.robotState.getRobotCurrentOrientation().add(orientation);
-	CubicPathGenerator path = new CubicPathGenerator(this.robotState.getRobotCurrentPosition(),
-		this.robotState.getRobotCurrentOrientation(), finalPosition, finalOrientation);
+
 	this.robotState.setRobotDesiredPosition(finalPosition);
 	this.robotState.setRobotDesiredOrientation(finalOrientation);
+
+	CubicPathGenerator path = new CubicPathGenerator(this.robotState.getRobotCurrentPosition(),
+		this.robotState.getRobotCurrentOrientation(), finalPosition, finalOrientation);
 	// TODO Auto-generated method stub
     }
 
