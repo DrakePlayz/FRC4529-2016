@@ -95,7 +95,7 @@ public enum LogitechJoystickButtons
      * 
      * @return The joystick buttons that cancel autonomous arm motion.
      */
-    public EnumSet<LogitechJoystickButtons> getCancelArmButtons()
+    public static EnumSet<LogitechJoystickButtons> getCancelArmButtons()
     {
 	EnumSet<LogitechJoystickButtons> cancelArmButtons = EnumSet.allOf(LogitechJoystickButtons.class);
 	cancelArmButtons.remove(SHOOT_PISTON);
@@ -106,7 +106,7 @@ public enum LogitechJoystickButtons
      * 
      * @return the joystick buttons that cancel autonomous drive motion.
      */
-    public EnumSet<LogitechJoystickButtons> getCancelDriveButtons()
+    public static EnumSet<LogitechJoystickButtons> getCancelDriveButtons()
     {
 	EnumSet<LogitechJoystickButtons> cancelDriveButtons = EnumSet.noneOf(LogitechJoystickButtons.class);
 	cancelDriveButtons.add(START_COLLECTION);

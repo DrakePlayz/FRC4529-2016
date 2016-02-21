@@ -92,24 +92,37 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-	LogitechJoystickButtons buttonPressed = null;
+	EnumSet<LogitechJoystickButtons> buttonPressed = EnumSet.noneOf(LogitechJoystickButtons.class);
 	for(LogitechJoystickButtons jb : JB)
 	{
 	    if(joystick.getRawButton(jb.getButtonNum()))
 	    {
-		buttonPressed = jb;
+		buttonPressed.add(jb);
+		if(LogitechJoystickButtons.getCancelArmButtons().contains(jb))
+		{
+		    if(robotArm.isAlive())
+		    {
+			robotArm.interrupt();
+		    }
+		}
+
+		if(LogitechJoystickButtons.getCancelDriveButtons().contains(jb))
+		{
+		    if(driveBase.isAlive())
+		    {
+			driveBase.interrupt();
+		    }
+		}
 	    }
 	}
 
-	if(joystick.getMagnitude() > 0.05 || buttonPressed == LogitechJoystickButtons.PAUSE_RESUME_AUTO)
+	if(joystick.getMagnitude() > 0.05 || buttonPressed.contains(LogitechJoystickButtons.PAUSE_RESUME_AUTO))
 	{
-	    interruptThreads();
 	    driveBase.joystickMove(joystick);
 	    robotState.setResumeDesiredMotion(true);
 	}
-	else if(buttonPressed == LogitechJoystickButtons.STOP_AUTO)
+	else if(buttonPressed.contains(LogitechJoystickButtons.STOP_AUTO))
 	{
-	    interruptThreads();
 	    robotState.setResumeDesiredMotion(false);
 	    startThreads = false;
 	}
@@ -130,20 +143,6 @@ public class Robot extends IterativeRobot
 
 		    }
 		}
-	    }
-	}
-    }
-
-    /**
-     * Interrupts all the pausable threads.
-     */
-    private void interruptThreads()
-    {
-	for(Thread t : pausableThreads)
-	{
-	    if(!t.isInterrupted())
-	    {
-		t.interrupt();
 	    }
 	}
     }
