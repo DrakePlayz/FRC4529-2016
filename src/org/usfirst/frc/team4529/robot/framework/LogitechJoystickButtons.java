@@ -69,6 +69,12 @@ public enum LogitechJoystickButtons
 
     private int buttonNum;
 
+    /**
+     * Sets the button number associated with each button.
+     * 
+     * @param buttonNum
+     *            the button number associated with each button.
+     */
     private LogitechJoystickButtons(int buttonNum)
     {
 	setButtonNum(buttonNum);

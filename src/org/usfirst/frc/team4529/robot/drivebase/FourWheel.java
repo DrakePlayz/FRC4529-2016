@@ -5,6 +5,7 @@ import org.usfirst.frc.team4529.framework.CubicPathGenerator;
 import org.usfirst.frc.team4529.framework.Position;
 import org.usfirst.frc.team4529.robot.RobotState;
 import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException;
+import org.usfirst.frc.team4529.robot.framework.RoboRioPWMPorts;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -16,12 +17,9 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class FourWheel extends DriveBase
 {
-    private static final int LEFT_MOTOR_PORT = 1;
-    private static final int RIGHT_MOTOR_PORT = 0;
-
     private RobotState robotState = RobotState.getInstance();
-    private Talon leftMotor = new Talon(LEFT_MOTOR_PORT);
-    private Talon rightMotor = new Talon(RIGHT_MOTOR_PORT);
+    private Talon leftMotor = new Talon(RoboRioPWMPorts.LEFT_MOTOR.getPort());
+    private Talon rightMotor = new Talon(RoboRioPWMPorts.RIGHT_MOTOR.getPort());
 
     /**
      * Constructor that follows a weird implementation of a singleton.
