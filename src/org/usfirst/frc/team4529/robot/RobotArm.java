@@ -14,8 +14,8 @@ import org.usfirst.frc.team4529.robot.exceptions.ArmPastMaximumExtensionExceptio
 public class RobotArm extends Thread
 {
     // TODO: Check arm max physical angle
-    private static Angle ARM_LOWEST_ANGLE = Angle.ZERO;
-    private static Angle ARM_HIGHEST_ANGLE = Angle.SIXTY;
+    public static final Angle ARM_LOWEST_ANGLE = Angle.ZERO;
+    public static final Angle ARM_HIGHEST_ANGLE = Angle.SIXTY;
     private volatile Angle armAngle;
     private boolean angleSet = false;
     private static RobotArm instance = null;

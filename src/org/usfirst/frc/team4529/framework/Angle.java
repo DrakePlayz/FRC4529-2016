@@ -181,4 +181,9 @@ public class Angle
 	    return new Angle(360 - trueAngle);
 	}
     }
+
+    public Angle multiply(Angle toMultiply)
+    {
+	return new Angle(this.getValue() * toMultiply.getValue());
+    }
 }
