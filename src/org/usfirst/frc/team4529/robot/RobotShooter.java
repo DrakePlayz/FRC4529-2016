@@ -1,8 +1,5 @@
 package org.usfirst.frc.team4529.robot;
 
-import org.usfirst.frc.team4529.field.Location;
-import org.usfirst.frc.team4529.robot.exceptions.NotInShootingPositionException;
-
 /**
  * The robot shooter thread that handles pickup and shooting.
  * 
@@ -62,41 +59,42 @@ public class RobotShooter extends Thread
     @Override
     public void run()
     {
-	if(shooting)
-	{
-	    if(robotState.checkPosition(Location.HIGH_GOAL_CENTER) || robotState.checkPosition(Location.HIGH_GOAL_LEFT))
-	    {
-		/*
-		 * Set motors to shooting. Run power. Wait for arm angle
-		 * (join?). Fire Piston.
-		 */
-	    }
-	    else if(robotState.checkPosition(Location.LOW_GOAL_LEFT)
-		    || robotState.checkPosition(Location.LOW_GOAL_RIGHT))
-	    {
-		/*
-		 * Set motors to shooting. Check arm angle. If correct, run
-		 * motors. Fire piston.
-		 */
-	    }
-	    else
-	    {
-		try
-		{
-		    throw new NotInShootingPositionException();
-		}
-		catch(NotInShootingPositionException e)
-		{
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-	    }
-	}
-	else
-	{
-	    // pickup, so enable the manual control? (disable the automated
-	    // driving)
-	}
+	// if(shooting)
+	// {
+	// if(robotState.checkPosition(Location.HIGH_GOAL_CENTER) ||
+	// robotState.checkPosition(Location.HIGH_GOAL_LEFT))
+	// {
+	// /*
+	// * Set motors to shooting. Run power. Wait for arm angle
+	// * (join?). Fire Piston.
+	// */
+	// }
+	// else if(robotState.checkPosition(Location.LOW_GOAL_LEFT)
+	// || robotState.checkPosition(Location.LOW_GOAL_RIGHT))
+	// {
+	// /*
+	// * Set motors to shooting. Check arm angle. If correct, run
+	// * motors. Fire piston.
+	// */
+	// }
+	// else
+	// {
+	// try
+	// {
+	// throw new NotInShootingPositionException();
+	// }
+	// catch(NotInShootingPositionException e)
+	// {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	// else
+	// {
+	// // pickup, so enable the manual control? (disable the automated
+	// // driving)
+	// }
 	/*
 	 * 1. Set motor direction and power (pickup/shoot).
 	 * 1a. if shooting GOTO 2 else GOTO 3.

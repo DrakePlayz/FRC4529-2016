@@ -4,6 +4,7 @@ import org.usfirst.frc.team4529.field.Location;
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.framework.Position;
 import org.usfirst.frc.team4529.robot.exceptions.ArmAngleNotSetException;
+import org.usfirst.frc.team4529.robot.exceptions.NotImplementedYetException;
 import org.usfirst.frc.team4529.robot.framework.RoboRioAnalogPorts;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
@@ -216,13 +217,15 @@ public class RobotState extends Thread
      * 
      * @param desiredLocation
      * @return
+     * @throws NotImplementedYetException
+     *             has not been implimented.
      */
-    public boolean checkPosition(Location desiredLocation)
+    public boolean checkPosition(Location desiredLocation) throws NotImplementedYetException
     {
 	// TODO Auto-generated method stub
 	// if the current location is within a range of the desired location
 	// return true.
-	return false;
+	throw new NotImplementedYetException();
     }
 
     /**
@@ -233,8 +236,12 @@ public class RobotState extends Thread
      */
     private Angle armPotValueToAngle()
     {
+	// raw value - lowest pot value (now between 0 and (highest - lowest))
+	// divide by range (highest - lowest) [now between 0 and 1]
+	// multiply by arm angle range (now between 0 and arm angle max - min)
+	// add min angle (now between min and max)
 	return new Angle((armPot.get() - RobotArm.ARM_LOWEST_POT_SAFE_VALUE) / (RobotArm.ARM_POT_RANGE))
-		.multiply(RobotArm.ARM_ANGLE_RANGE);
+		.multiply(RobotArm.ARM_ANGLE_RANGE).add(RobotArm.ARM_LOWEST_ANGLE);
     }
 
     /*
