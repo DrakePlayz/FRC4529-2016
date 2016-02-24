@@ -4,6 +4,8 @@ import org.usfirst.frc.team4529.field.Location;
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.framework.Position;
 import org.usfirst.frc.team4529.robot.exceptions.ArmAngleNotSetException;
+import org.usfirst.frc.team4529.robot.framework.RoboRioAnalogPorts;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
 /**
  * Holds the state of the robot and updates all the states in other classes.
@@ -22,6 +24,9 @@ public class RobotState extends Thread
     private boolean resumeDesiredMotion;
     private boolean robotArmExtended;
     private boolean ballCollected;
+
+    private AnalogPotentiometer armPot = new AnalogPotentiometer(RoboRioAnalogPorts.ARM_POTENTIOMETER.getPort(),
+	    Math.pow(2, 12), 0);
 
     private static RobotState instance = null;
 
@@ -220,6 +225,18 @@ public class RobotState extends Thread
 	return false;
     }
 
+    /**
+     * Turns the arm pot raw value into an angle based on a function of the safe
+     * pot values and min and max arm angle values.
+     * 
+     * @return the angle of the arm represented by the pot value.
+     */
+    private Angle armPotValueToAngle()
+    {
+	return new Angle((armPot.get() - RobotArm.ARM_LOWEST_POT_SAFE_VALUE) / (RobotArm.ARM_POT_RANGE))
+		.multiply(RobotArm.ARM_ANGLE_RANGE);
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -230,6 +247,7 @@ public class RobotState extends Thread
     {
 	while(true)
 	{
+	    setRobotArmAngle(armPotValueToAngle());
 	    // TODO: get values from all the sensors and update the information.
 	    setRobotPosition(Position.ORIGIN);
 	    setRobotOrientation(Angle.ZERO);

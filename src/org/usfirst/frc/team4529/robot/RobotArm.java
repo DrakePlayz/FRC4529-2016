@@ -3,6 +3,8 @@ package org.usfirst.frc.team4529.robot;
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.robot.exceptions.ArmAngleNotSetException;
 import org.usfirst.frc.team4529.robot.exceptions.ArmPastMaximumExtensionException;
+import org.usfirst.frc.team4529.robot.framework.RoboRioPWMPorts;
+import edu.wpi.first.wpilibj.Jaguar;
 
 /**
  * The arm singleton manages the arm on the robot. Can move the arm to a
@@ -15,7 +17,20 @@ public class RobotArm extends Thread
 {
     // TODO: Check arm max physical angle
     public static final Angle ARM_LOWEST_ANGLE = Angle.ZERO;
-    public static final Angle ARM_HIGHEST_ANGLE = Angle.SIXTY;
+    public static final Angle ARM_HIGHEST_ANGLE = new Angle(75);
+    public static final Angle ARM_ANGLE_RANGE = ARM_HIGHEST_ANGLE.subtract(ARM_LOWEST_ANGLE);
+    public static final double ARM_LOWEST_POT_SAFE_VALUE = 270;
+    public static final double ARM_HIGHEST_POT_SAFE_VALUE = 1500;
+    public static final double ARM_POT_RANGE = ARM_HIGHEST_POT_SAFE_VALUE - ARM_LOWEST_POT_SAFE_VALUE;
+
+    public static final Jaguar ARM_MOTOR = new Jaguar(RoboRioPWMPorts.ARM_MOTOR.getPort());
+
+    // PID tuning constants [0-1]
+    // TODO: Tune constants
+    private static final double DERIVATIVE_CONSTANT = 1;
+    private static final double INTEGRAL_CONSTANT = .2;
+    private static final double PROPORTIONAL_CONSTANT = .5;
+
     private volatile Angle armAngle;
     private boolean angleSet = false;
     private static RobotArm instance = null;
@@ -56,7 +71,37 @@ public class RobotArm extends Thread
 	    throw new ArmPastMaximumExtensionException();
 	}
 
-	// TODO: Move arm to armAngle.
+	pidMove(this.armAngle);
+    }
+
+    /**
+     * Moves the arm to a desired angle using really basic PID tuning.
+     * 
+     * @param desiredArmAngle
+     *            the angle to move the arm to.
+     */
+    private void pidMove(Angle desiredArmAngle)
+    {
+	long dt = System.currentTimeMillis();
+	double previousError = 0;
+	double integral = 0;
+	double derivative;
+	double error;
+	while(this.armAngle != this.robotState.getRobotCurrentArmAngle())
+	{
+	    dt = (System.currentTimeMillis() - dt) / 1000;
+	    error = desiredArmAngle.subtract(this.robotState.getRobotCurrentArmAngle()).getValue()
+		    / ARM_ANGLE_RANGE.getValue();
+	    integral = integral + (error * dt);
+	    derivative = (error - previousError) / dt;
+	    ARM_MOTOR.set(
+		    (PROPORTIONAL_CONSTANT * error + INTEGRAL_CONSTANT * integral + DERIVATIVE_CONSTANT * derivative));
+	    // would be nice to get this between -1 and 1 before setting but I
+	    // can't think of a way to do that. Currently this will just set max
+	    // power and hopefully reduce power as the desired position
+	    // approaches.
+	    previousError = error;
+	}
     }
 
     /**
