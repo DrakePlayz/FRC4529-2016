@@ -82,9 +82,9 @@ public class RobotState extends Thread
     }
 
     /**
-     * @return the armAngle
+     * @return the robotCurrentArmAngle
      */
-    public Angle getArmAngle()
+    public Angle getRobotCurrentArmAngle()
     {
 	return this.robotCurrentArmAngle;
     }

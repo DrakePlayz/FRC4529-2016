@@ -150,6 +150,18 @@ public class Angle
     }
 
     /**
+     * Subtract an angle from *this* angle.
+     * 
+     * @param toSubtract
+     *            the angle to subtract from *this* angle.
+     * @return the difference between *this* angle and the angle to subtract.
+     */
+    public Angle subtract(Angle toSubtract)
+    {
+	return new Angle(this.getValue() - toSubtract.getValue());
+    }
+
+    /**
      * The negative of the angle.
      * 
      * @return The negative angle.

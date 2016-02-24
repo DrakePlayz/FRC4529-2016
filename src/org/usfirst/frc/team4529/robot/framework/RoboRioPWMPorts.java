@@ -8,7 +8,7 @@ package org.usfirst.frc.team4529.robot.framework;
  */
 public enum RoboRioPWMPorts
 {
-    LEFT_MOTOR(0), RIGHT_MOTOR(1), ARM_MOTOR(2), SHOOTING_WHEEL_MOTOR(3);
+    LEFT_MOTOR(0), RIGHT_MOTOR(1), ARM_MOTOR(2), SHOOTING_WHEEL_MOTORS(3);
 
     private final int port;
 
