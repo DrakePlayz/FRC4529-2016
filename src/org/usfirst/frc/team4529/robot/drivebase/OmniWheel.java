@@ -47,8 +47,6 @@ public class OmniWheel extends DriveBase
     @Override
     public void joystickMove(Joystick joystick)
     {
-	double x = joystick.getRawAxis(0);
-	double y = -joystick.getRawAxis(1); // y axis is reversed on joystick
 	double z = joystick.getRawAxis(2); // joystick twist, anti-clockwise
 					   // positive
 	double percentPower = (-joystick.getRawAxis(3) + 1) / 2; // rawAxis(3)
@@ -80,13 +78,11 @@ public class OmniWheel extends DriveBase
 		rearMotorPower = -rearMotorPower;
 	    }
 	}
-	else
-	{
-	    leftMotorPower = Math.sin(joystickAngle) * mainStickMagnitude;
-	    rightMotorPower = Math.sin(joystickAngle) * mainStickMagnitude;
-	    frontMotorPower = Math.cos(joystickAngle) * mainStickMagnitude;
-	    rearMotorPower = -Math.cos(joystickAngle) * mainStickMagnitude;
-	}
+
+	leftMotorPower += Math.sin(joystickAngle) * mainStickMagnitude;
+	rightMotorPower += Math.sin(joystickAngle) * mainStickMagnitude;
+	frontMotorPower += Math.cos(joystickAngle) * mainStickMagnitude;
+	rearMotorPower += -Math.cos(joystickAngle) * mainStickMagnitude;
 
 	driveMotors(leftMotorPower, rightMotorPower, frontMotorPower, rearMotorPower, percentPower);
     }
