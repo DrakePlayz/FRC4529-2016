@@ -3,8 +3,6 @@ package org.usfirst.frc.team4529.robot;
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.robot.exceptions.ArmAngleNotSetException;
 import org.usfirst.frc.team4529.robot.exceptions.ArmPastMaximumExtensionException;
-import org.usfirst.frc.team4529.robot.framework.RoboRioPWMPorts;
-import edu.wpi.first.wpilibj.Jaguar;
 
 /**
  * The arm singleton manages the arm on the robot. Can move the arm to a
@@ -23,7 +21,8 @@ public class RobotArm extends Thread
     public static final double ARM_HIGHEST_POT_SAFE_VALUE = 1500;
     public static final double ARM_POT_RANGE = ARM_HIGHEST_POT_SAFE_VALUE - ARM_LOWEST_POT_SAFE_VALUE;
 
-    public static final Jaguar ARM_MOTOR = new Jaguar(RoboRioPWMPorts.ARM_MOTOR.getPort());
+    // public static final Jaguar ARM_MOTOR = new
+    // Jaguar(RoboRioPWMPorts.ARM_MOTOR.getPort());
 
     // PID tuning constants [0-1]
     // TODO: Tune constants
@@ -94,8 +93,9 @@ public class RobotArm extends Thread
 		    / ARM_ANGLE_RANGE.getValue();
 	    integral = integral + (error * dt);
 	    derivative = (error - previousError) / dt;
-	    ARM_MOTOR.set(
-		    (PROPORTIONAL_CONSTANT * error + INTEGRAL_CONSTANT * integral + DERIVATIVE_CONSTANT * derivative));
+	    // ARM_MOTOR.set(
+	    // (PROPORTIONAL_CONSTANT * error + INTEGRAL_CONSTANT * integral +
+	    // DERIVATIVE_CONSTANT * derivative));
 	    // would be nice to get this between -1 and 1 before setting but I
 	    // can't think of a way to do that. Currently this will just set max
 	    // power and hopefully reduce power as the desired position

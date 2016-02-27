@@ -2,7 +2,6 @@ package org.usfirst.frc.team4529.robot.drivebase;
 
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.framework.Position;
-import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -16,19 +15,17 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class OmniWheel extends DriveBase
 {
-    private static Talon leftMotor = new Talon(2);
-    private static Talon rightMotor = new Talon(3);
-    private static Talon frontCenterMotor = new Talon(0);
-    private static Talon rearCenterMotor = new Talon(1);
+    private Talon leftMotor;
+    private Talon rightMotor;
+    private Talon frontCenterMotor;
+    private Talon rearCenterMotor;
 
-    /**
-     * Constructor that follows a weird implementation of a singleton.
-     * 
-     * @throws DriveBaseAlreadyExistsException
-     */
     public OmniWheel()
     {
-
+	leftMotor = new Talon(2);
+	rightMotor = new Talon(3);
+	frontCenterMotor = new Talon(0);
+	rearCenterMotor = new Talon(1);
     }
 
     /*
@@ -41,44 +38,35 @@ public class OmniWheel extends DriveBase
     @Override
     public void joystickMove(Joystick joystick)
     {
-	double z = joystick.getRawAxis(2); // joystick twist, anti-clockwise
-					   // positive
-	double percentPower = (-joystick.getRawAxis(3) + 1) / 2; // rawAxis(3)
-								 // goes from 1
-								 // at bottom to
-								 // -1 at top
-	double joystickAngle = joystick.getDirectionRadians();
-	double mainStickMagnitude = joystick.getMagnitude() / Math.sqrt(2);
-	double leftMotorPower = 0;
-	double rightMotorPower = 0;
-	double frontMotorPower = 0;
-	double rearMotorPower = 0;
 
-	if(Math.abs(z) > 0.15)
+	double leftMotorPower = y;
+	double rightMotorPower = y;
+	double frontMotorPower = x;
+	double rearMotorPower = x;
+
+	if(z > 0)
 	{
-	    leftMotorPower = Math.pow(z, 2);
-	    rightMotorPower = Math.pow(z, 2);
-	    frontMotorPower = Math.pow(z, 2);
-	    rearMotorPower = Math.pow(z, 2);
-
-	    if(z < 0)
-	    {// clockwise is negative
-		rightMotorPower = -rightMotorPower;
-	    }
-	    else
-	    {
-		leftMotorPower = -leftMotorPower;
-		frontMotorPower = -frontMotorPower;
-		rearMotorPower = -rearMotorPower;
-	    }
+	    leftMotorPower += Math.pow(z, 2);
+	    rightMotorPower -= Math.pow(z, 2);
+	    frontMotorPower += Math.pow(z, 2);
+	    rearMotorPower -= Math.pow(z, 2);
+	}
+	else
+	{
+	    leftMotorPower -= Math.pow(z, 2);
+	    rightMotorPower += Math.pow(z, 2);
+	    frontMotorPower -= Math.pow(z, 2);
+	    rearMotorPower += Math.pow(z, 2);
 	}
 
-	leftMotorPower += Math.sin(joystickAngle) * mainStickMagnitude;
-	rightMotorPower += Math.sin(joystickAngle) * mainStickMagnitude;
-	frontMotorPower += Math.cos(joystickAngle) * mainStickMagnitude;
-	rearMotorPower += -Math.cos(joystickAngle) * mainStickMagnitude;
-
-	driveMotors(leftMotorPower, rightMotorPower, frontMotorPower, rearMotorPower, percentPower);
+	if(mainStickMagnitude > 0.05 || z > 0.05)
+	{
+	    driveMotors(leftMotorPower, rightMotorPower, frontMotorPower, rearMotorPower, percentPower);
+	}
+	else
+	{
+	    driveMotors(0, 0, 0, 0, 0);
+	}
     }
 
     /*
@@ -133,7 +121,7 @@ public class OmniWheel extends DriveBase
 	leftMotor.set(leftMotorSpeed);
 	rightMotor.set(-rightMotorSpeed);
 	frontCenterMotor.set(frontMotorSpeed);
-	rearCenterMotor.set(rearMotorSpeed);
+	rearCenterMotor.set(-rearMotorSpeed);
     }
 
 }

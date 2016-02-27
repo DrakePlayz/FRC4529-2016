@@ -2,7 +2,6 @@ package org.usfirst.frc.team4529.robot;
 
 import java.util.ArrayDeque;
 import java.util.EnumSet;
-import org.usfirst.frc.team4529.robot.drivebase.DriveBase;
 import org.usfirst.frc.team4529.robot.drivebase.OmniWheel;
 import org.usfirst.frc.team4529.robot.framework.LogitechJoystickButtons;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -24,7 +23,7 @@ public class Robot extends IterativeRobot
     private RobotState robotState;
     private RobotShooter robotShooter;
     private Joystick joystick;
-    private DriveBase driveBase;
+    private OmniWheel driveBase;
     private ArrayDeque<Thread> pausableThreads = new ArrayDeque<Thread>();
     private boolean startThreads = false;
 
@@ -64,7 +63,7 @@ public class Robot extends IterativeRobot
 
 	pausableThreads.add(robotShooter);
 	pausableThreads.add(robotArm);
-	pausableThreads.add(driveBase);
+	// pausableThreads.add(driveBase);
     }
 
     /**
@@ -97,7 +96,8 @@ public class Robot extends IterativeRobot
 		    }
 		}
 
-		if(LogitechJoystickButtons.getCancelDriveButtons().contains(jb))
+		if(LogitechJoystickButtons.getCancelDriveButtons().contains(jb) || joystick.getMagnitude() > 0.05
+			|| joystick.getRawAxis(2) > 0.05)
 		{
 		    if(driveBase.isAlive())
 		    {
@@ -107,10 +107,9 @@ public class Robot extends IterativeRobot
 	    }
 	}
 
-	if(joystick.getMagnitude() > 0.05 || buttonPressed.contains(LogitechJoystickButtons.PAUSE_RESUME_AUTO))
+	if(!driveBase.isAlive())
 	{
 	    driveBase.joystickMove(joystick);
-	    robotState.setResumeDesiredMotion(true);
 	}
 	else if(buttonPressed.contains(LogitechJoystickButtons.STOP_AUTO))
 	{

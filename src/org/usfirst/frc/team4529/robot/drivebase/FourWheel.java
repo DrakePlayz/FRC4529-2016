@@ -81,16 +81,6 @@ public class FourWheel extends DriveBase
     @Override
     public void joystickMove(Joystick joystick)
     {
-	double x = joystick.getRawAxis(0);
-	double y = -joystick.getRawAxis(1); // y axis is reversed on joystick
-	double z = joystick.getRawAxis(2); // joystick twist, anti-clockwise
-					   // positive
-	double percentPower = (-joystick.getRawAxis(3) + 1) / 2; // rawAxis(3)
-								 // goes from 1
-								 // at bottom to
-								 // -1 at top
-	double joystickAngle = joystick.getDirectionRadians();
-	double mainStickMagnitude = joystick.getMagnitude() / Math.sqrt(2);
 	double leftMotorPower = 0;
 	double rightMotorPower = 0;
 
@@ -98,7 +88,7 @@ public class FourWheel extends DriveBase
 	{// clockwise is negative
 	    leftMotorPower = Math.pow(z, 2);
 	    rightMotorPower = Math.pow(z, 2);
-	    if(z < 0)
+	    if(z > 0)
 	    {
 		rightMotorPower = -rightMotorPower;
 	    }
@@ -132,7 +122,14 @@ public class FourWheel extends DriveBase
 	    }
 	}
 
-	driveMotors(leftMotorPower, rightMotorPower, percentPower);
+	if(mainStickMagnitude > 0.05 || z > 0.05)
+	{
+	    driveMotors(leftMotorPower, rightMotorPower, percentPower);
+	}
+	else
+	{
+	    driveMotors(0, 0, 0);
+	}
     }
 
     /**

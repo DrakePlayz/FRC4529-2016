@@ -3,7 +3,6 @@ package org.usfirst.frc.team4529.robot.drivebase;
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.framework.Position;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
 
 /**
  * Defines what each implementation of a drive base will be able to do.
@@ -14,8 +13,12 @@ import edu.wpi.first.wpilibj.RobotDrive;
  */
 public abstract class DriveBase extends Thread
 {
-    protected static DriveBase driveBase = null;
-    protected RobotDrive robotDrive;
+    protected double x;
+    protected double y;
+    protected double z;
+    protected double percentPower;
+    protected double mainStickMagnitude;
+    protected double joystickAngle;
 
     /**
      * Move the robot with joystick input.
@@ -24,6 +27,22 @@ public abstract class DriveBase extends Thread
      *            the joystick used for driving.
      */
     public abstract void joystickMove(Joystick joystick);
+
+    /**
+     * Sets all the various values based on joystick input.
+     * 
+     * @param joystick
+     *            the joystick used.
+     */
+    protected void setJoystickValue(Joystick joystick)
+    {
+	joystickAngle = (Math.PI / 2) - joystick.getDirectionRadians();
+	x = joystick.getRawAxis(0);
+	y = -joystick.getRawAxis(1);
+	z = joystick.getRawAxis(2);
+	percentPower = (-joystick.getRawAxis(3) + 1) / 2;
+	mainStickMagnitude = joystick.getMagnitude() / Math.sqrt(2);
+    }
 
     /**
      * Move the robot to an absolute position.
@@ -45,21 +64,4 @@ public abstract class DriveBase extends Thread
      *            clockwise</i>.
      */
     public abstract void moveBy(Position position, Angle orientation);
-
-    /**
-     * @return the robotDrive
-     */
-    public RobotDrive getRobotDrive()
-    {
-	return robotDrive;
-    }
-
-    /**
-     * @param robotDrive
-     *            the robotDrive to set
-     */
-    public void setRobotDrive(RobotDrive robotDrive)
-    {
-	this.robotDrive = robotDrive;
-    }
 }
