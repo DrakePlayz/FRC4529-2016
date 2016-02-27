@@ -2,7 +2,6 @@ package org.usfirst.frc.team4529.robot.drivebase;
 
 import org.usfirst.frc.team4529.framework.Angle;
 import org.usfirst.frc.team4529.framework.Position;
-import org.usfirst.frc.team4529.robot.exceptions.DriveBaseNotInstantiatedException;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 
@@ -62,20 +61,5 @@ public abstract class DriveBase extends Thread
     public void setRobotDrive(RobotDrive robotDrive)
     {
 	this.robotDrive = robotDrive;
-    }
-
-    /**
-     * 
-     * @return the instance of the drive base.
-     * @throws DriveBaseNotInstantiatedException
-     *             if no drive base has been instantiated.
-     */
-    public final DriveBase getDriveBase() throws DriveBaseNotInstantiatedException
-    {
-	if(driveBase == null)
-	{
-	    throw new DriveBaseNotInstantiatedException();
-	}
-	return driveBase;
     }
 }

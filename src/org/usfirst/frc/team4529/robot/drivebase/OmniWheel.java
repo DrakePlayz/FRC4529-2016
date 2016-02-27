@@ -26,15 +26,9 @@ public class OmniWheel extends DriveBase
      * 
      * @throws DriveBaseAlreadyExistsException
      */
-    public OmniWheel() throws DriveBaseAlreadyExistsException
+    public OmniWheel()
     {
-	if(driveBase == null)
-	{
-	    driveBase = this;
-	    return;
-	}
 
-	throw new DriveBaseAlreadyExistsException();
     }
 
     /*

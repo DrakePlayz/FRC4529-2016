@@ -28,13 +28,7 @@ public class FourWheel extends DriveBase
      */
     public FourWheel() throws DriveBaseAlreadyExistsException
     {
-	if(driveBase == null)
-	{
-	    driveBase = this;
-	    return;
-	}
 
-	throw new DriveBaseAlreadyExistsException();
     }
 
     /*

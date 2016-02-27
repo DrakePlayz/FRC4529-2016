@@ -3,8 +3,7 @@ package org.usfirst.frc.team4529.robot;
 import java.util.ArrayDeque;
 import java.util.EnumSet;
 import org.usfirst.frc.team4529.robot.drivebase.DriveBase;
-import org.usfirst.frc.team4529.robot.drivebase.FourWheel;
-import org.usfirst.frc.team4529.robot.exceptions.DriveBaseAlreadyExistsException;
+import org.usfirst.frc.team4529.robot.drivebase.OmniWheel;
 import org.usfirst.frc.team4529.robot.framework.LogitechJoystickButtons;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -27,7 +26,7 @@ public class Robot extends IterativeRobot
     private Joystick joystick;
     private DriveBase driveBase;
     private ArrayDeque<Thread> pausableThreads = new ArrayDeque<Thread>();
-    private boolean startThreads;
+    private boolean startThreads = false;
 
     /**
      * This function is run once each time the robot enters autonomous mode
@@ -60,16 +59,8 @@ public class Robot extends IterativeRobot
 	robotShooter = RobotShooter.getInstance();
 	joystick = new Joystick(JOYSTICK_PORT);
 
-	try
-	{
-	    driveBase = new FourWheel();
-	    driveBase.setPriority(8);
-	}
-	catch(DriveBaseAlreadyExistsException e)
-	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+	// driveBase = new FourWheel();
+	driveBase = new OmniWheel();
 
 	pausableThreads.add(robotShooter);
 	pausableThreads.add(robotArm);
