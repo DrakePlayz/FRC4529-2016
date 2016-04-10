@@ -59,7 +59,7 @@ public class OmniWheel extends DriveBase
 	    rearMotorPower += Math.pow(z, 2);
 	}
 
-	if(mainStickMagnitude > 0.05 || z > 0.05)
+	if(mainStickMagnitude > 0.05 || Math.abs(z) > 0.05)
 	{
 	    driveMotors(leftMotorPower, rightMotorPower, frontMotorPower, rearMotorPower, percentPower);
 	}
